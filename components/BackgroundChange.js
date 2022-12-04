@@ -1,5 +1,13 @@
 import React, {useState} from 'react';
-import {View, Text, ImageBackground} from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+  Modal,
+  TouchableWithoutFeedback,
+  ScrollView,
+} from 'react-native';
 import {images, icons, FONTS, COLORS, SIZES} from '../constants';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {
@@ -10,21 +18,21 @@ import {
 } from './CountryApiController';
 
 const BackgroundChange = () => {
-  const [openCountry, setOpenCountry] = useState(false);
-  const [valueCountry, setValueCountry] = useState(null);
-  const [country, setCountry] = useState([
-    {label: 'USA', value: '1'},
-    {label: 'UK', value: '2'},
-    {label: 'Australia', value: '3'},
-    {label: 'South Africa', value: '4'},
-  ]);
+  // const [openCountry, setOpenCountry] = useState(false);
+  // const [valueCountry, setValueCountry] = useState(null);
+  // const [country, setCountry] = useState([
+  //   {label: 'USA', value: '1'},
+  //   {label: 'UK', value: '2'},
+  //   {label: 'Australia', value: '3'},
+  //   {label: 'South Africa', value: '4'},
+  // ]);
 
-  const [openTime, setOpenTime] = useState(false);
-  const [valueTime, setValueTime] = useState(null);
-  const [time, setTime] = useState([
-    {label: '10:00 AM (Morinig)', value: '1'},
-    {label: '6:00 PM (Evening)', value: '2'},
-  ]);
+  // const [openTime, setOpenTime] = useState(false);
+  // const [valueTime, setValueTime] = useState(null);
+  // const [time, setTime] = useState([
+  //   {label: '10:00 AM (Morinig)', value: '1'},
+  //   {label: '6:00 PM (Evening)', value: '2'},
+  // ]);
 
   const [val, setVal] = useState('');
   const [timeZone, setTimeZone] = useState('');
@@ -52,6 +60,34 @@ const BackgroundChange = () => {
     }
   };
 
+  const [countryModal, setCountryModal] = React.useState(false);
+  const arr = [
+    {id: 1, name: 'USA'},
+    {id: 2, name: 'UK'},
+    {id: 3, name: 'Australia'},
+    {id: 4, name: 'South Africa'},
+  ];
+  const [country, setCountry] = React.useState(arr);
+
+  function renderCountryModal() {
+    return (
+      <Modal visible={countryModal} transparent={true} animationType={'slide'}>
+        <TouchableWithoutFeedback>
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <View>
+              <ScrollView></ScrollView>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+    );
+  }
+
   return (
     <ImageBackground
       source={images.night1}
@@ -60,93 +96,29 @@ const BackgroundChange = () => {
         style={{
           padding: 25,
           flex: 1,
-          justifyContent: 'space-around',
           alignItems: 'center',
         }}>
         <View
           style={{
-            backgroundColor: COLORS.black,
-            paddingHorizontal: 25,
-            paddingVertical: 15,
+            backgroundColor: COLORS.white,
+            padding: 20,
+            alignItems: 'center',
+            width: '70%',
           }}>
-          <Text style={{...FONTS.h2, color: COLORS.white}}>
-            {timeZone.datetime}
-          </Text>
+          <View style={{alignItems: 'center'}}>
+            <Text style={{...FONTS.h2, color: COLORS.black}}>UK</Text>
+            <Text style={{...FONTS.h2, color: COLORS.black}}>10:00 AM</Text>
+            <Text style={{...FONTS.h3, color: COLORS.black}}>04/12/2022</Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <TouchableOpacity></TouchableOpacity>
+          </View>
         </View>
-        <View
-          style={{
-            backgroundColor: COLORS.black,
-            padding: 25,
-            marginBottom: 150,
-          }}>
-          <Text
-            style={{
-              ...FONTS.h2,
-              color: COLORS.green,
-              marginBottom: 30,
-              textAlign: 'center',
-            }}>
-            Select Country & Time
-          </Text>
-          <DropDownPicker
-            style={{
-              borderWidth: null,
-              borderRadius: null,
-              backgroundColor: COLORS.white,
-              minHeight: 40,
-            }}
-            dropDownContainerStyle={{
-              backgroundColor: COLORS.white,
-              borderWidth: null,
-              borderRadius: null,
-            }}
-            textStyle={{
-              fontSize: 16,
-              color: COLORS.black,
-            }}
-            placeholder="Select country"
-            open={openCountry}
-            value={valueCountry}
-            items={country}
-            setOpen={setOpenCountry}
-            setValue={setValueCountry}
-            setItems={setCountry}
-            zIndex={5000}
-            zIndexInverse={2000}
-            onSelectItem={value => {
-              setVal(value.value);
-              fetchCountryTime();
-            }}
-          />
-          <DropDownPicker
-            style={{
-              marginTop: 15,
-              borderWidth: null,
-              borderRadius: null,
-              backgroundColor: COLORS.white,
-              minHeight: 40,
-            }}
-            dropDownContainerStyle={{
-              marginTop: 15,
-              backgroundColor: COLORS.white,
-              borderWidth: null,
-              borderRadius: null,
-            }}
-            textStyle={{
-              fontSize: 16,
-              color: COLORS.black,
-            }}
-            placeholder="Select time"
-            open={openTime}
-            value={valueTime}
-            items={time}
-            setOpen={setOpenTime}
-            setValue={setValueTime}
-            setItems={setTime}
-            zIndex={2000}
-            zIndexInverse={1000}
-          />
-        </View>
+        <TouchableOpacity
+          style={{marginTop: 30, backgroundColor: COLORS.white, padding: 10}}
+          onPress={() => setCountryModal(true)}>
+          <Text style={{...FONTS.h3, color: COLORS.black}}>Select Country</Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
