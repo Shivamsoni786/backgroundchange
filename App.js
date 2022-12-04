@@ -22,8 +22,6 @@ const App = () => {
   const [countryData, setCountryData] = React.useState('');
   const [countryModal, setCountryModal] = React.useState(false);
 
-  console.log(countryData);
-
   const getData = timezone => {
     const date = moment().tz(timezone);
 
